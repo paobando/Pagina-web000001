@@ -5,6 +5,62 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SectionReveal, WireframeCard } from '../components/UI';
 import BookSlider from '../components/BookSlider';
 
+/* ------------------------------------------------------------------ */
+/* Contenido curado de Inicio                                          */
+/* Todo es editable a mano: cada `path` debe ser una ruta real de App. */
+/* Regla: máximo 3 ítems por bloque para no saturar.                  */
+/* ------------------------------------------------------------------ */
+
+const QUICK_LINKS = [
+  { label: 'Bases de Datos', path: '/bases-de-datos' },
+  { label: 'Catálogo Físico', path: '/catalogo-publico' },
+  { label: 'Repositorio', path: '/repositorio-academico' },
+  { label: 'Salas de Estudio', path: '/reserva-de-salas' },
+];
+
+const PROFILES = [
+  { label: 'Estudiante', icon: <Users className="w-4 h-4" />, path: '/yo-soy/estudiante', hint: 'Salas, préstamos y talleres' },
+  { label: 'Profesor', icon: <GraduationCap className="w-4 h-4" />, path: '/yo-soy/profesor', hint: 'Apoyo docente e investigación' },
+  { label: 'Egresado', icon: <Bookmark className="w-4 h-4" />, path: '/yo-soy/graduado', hint: 'Beneficios de por vida' },
+  { label: 'Visitante', icon: <Globe className="w-4 h-4" />, path: '/la-biblioteca', hint: 'Horarios, acceso y agenda abierta' },
+];
+
+// "Tema del mes": 1 pieza protagonista + 2 secundarias unidas por un mismo relato.
+const THEME_OF_MONTH = {
+  eyebrow: 'Tema del mes',
+  title: 'Leer, crear, conversar',
+  intro: 'La biblioteca también es escenario: clubes, vinilos, conferencias y talleres para la comunidad Icesi y para quien nos visite.',
+  featured: {
+    kicker: 'Abierto a todos',
+    title: 'Agenda cultural y académica',
+    description: 'Clubes de lectura, cineforos, exposiciones y talleres. Revisa las fechas y acompáñanos, seas o no parte de Icesi.',
+    path: '/agenda',
+    cta: 'Ver la agenda',
+  },
+  items: [
+    { kicker: 'Escucha', title: 'Tocadiscos y audioteca', description: 'Vinilos y un espacio de audición analógica en el piso 3.', path: '/tocadiscos', icon: <Sparkles className="w-5 h-5" /> },
+    { kicker: 'Mira', title: 'Repositorio audiovisual', description: 'Conferencias, lecciones y podcasts de la comunidad Icesi.', path: '/repositorio-audiovisual', icon: <Video className="w-5 h-5" /> },
+  ],
+};
+
+// Cierre "Sigue explorando": tres puertas distintas a lo ya visto en la página.
+const KEEP_EXPLORING = [
+  { title: 'Formación y asesoría', description: 'Aprende a buscar, evaluar y citar fuentes con el equipo de la biblioteca.', path: '/formacion-y-asesoria', icon: <Lightbulb className="w-5 h-5" /> },
+  { title: 'Préstamo interbibliotecario', description: '¿No tenemos el libro? Lo pedimos a otra universidad por ti.', path: '/prestamo-interbibliotecario', icon: <Globe className="w-5 h-5" /> },
+  { title: 'Guías y tutoriales', description: 'Paso a paso para sacarle provecho a cada recurso.', path: '/guias-y-tutoriales', icon: <Info className="w-5 h-5" /> },
+];
+
+/** Eyebrow numerado que hilvana la página como capítulos de un mismo relato. */
+function Chapter({ n, label, tone = 'blue', className = '' }: { n: string; label: string; tone?: 'blue' | 'yellow'; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-3 font-black text-[10px] uppercase tracking-[0.4em] mb-2 ${tone === 'blue' ? 'text-brand-blue' : 'text-brand-yellow'} ${className}`}>
+      <span className="tabular-nums">{n}</span>
+      <span className={`w-6 h-px ${tone === 'blue' ? 'bg-brand-blue/40' : 'bg-brand-yellow/40'}`} />
+      {label}
+    </span>
+  );
+}
+
 export default function Inicio() {
   const navigate = useNavigate();
 
@@ -51,27 +107,28 @@ export default function Inicio() {
     }
   };
 
+  // Los ids coinciden con los de NoticiaDetalle para que cada tarjeta abra su propia noticia.
   const news = [
     {
+      id: 0,
+      title: 'Nuevas bases de datos especializadas en medicina',
+      date: 'Mayo 02, 2026',
+      category: 'Recursos',
+      excerpt: 'Cinco nuevas plataformas digitales para fortalecer la investigación y la docencia de la Facultad de Ciencias de la Salud.'
+    },
+    {
       id: 1,
-      title: 'Inauguración de la nueva Sala de Co-creación',
-      date: '15 de Abril, 2026',
-      category: 'Servicios',
-      excerpt: 'Un espacio diseñado para el trabajo colaborativo, la ideación y el desarrollo de proyectos innovadores ya está disponible.'
+      title: 'Exposición fotográfica: Caminos del Valle',
+      date: 'Abril 28, 2026',
+      category: 'Cultura',
+      excerpt: 'La geografía y arquitectura del Valle del Cauca a través del lente de nuestros estudiantes de artes y diseño.'
     },
     {
       id: 2,
-      title: 'Nuevas bases de datos científicas disponibles',
-      date: '12 de Abril, 2026',
-      category: 'Recursos',
-      excerpt: 'Hemos ampliado nuestra colección digital con acceso a prestigiosas revistas en el área de Ciencias Aplicadas y Diseño.'
-    },
-    {
-      id: 3,
-      title: 'Horarios especiales durante la semana de receso',
-      date: '10 de Abril, 2026',
-      category: 'Institucional',
-      excerpt: 'Conoce los horarios de atención y servicios disponibles durante la próxima semana de actividades académicas reducidas.'
+      title: 'Horarios especiales por temporada de exámenes',
+      date: 'Abril 25, 2026',
+      category: 'Servicios',
+      excerpt: 'Para apoyar el estudio intensivo del cierre de semestre, la biblioteca amplía su horario nocturno.'
     }
   ];
 
@@ -118,11 +175,9 @@ export default function Inicio() {
         
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 w-full z-10 text-center">
           <div className="max-w-4xl mx-auto">
-            <span className="inline-block text-brand-yellow font-black text-[10px] uppercase tracking-[0.3em] mb-2">
-              Biblioteca Universidad Icesi
-            </span>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight drop-shadow-xl whitespace-normal md:whitespace-nowrap">
-              Todo el conocimiento de la universidad en un solo lugar.
+            <Chapter n="01" label="Biblioteca Universidad Icesi" tone="yellow" className="!tracking-[0.3em]" />
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight drop-shadow-xl text-balance">
+              Conocimiento, creatividad y cultura, abiertos a todos.
             </h1>
             
             <motion.div 
@@ -231,10 +286,10 @@ export default function Inicio() {
               className="mt-8 flex flex-wrap justify-center gap-6 text-white/50 text-[10px] font-bold uppercase tracking-widest"
             >
               <span className="text-white/30">Acceso rápido:</span>
-              {['Bases de Datos', 'Catálogo Físico', 'Repositorio', 'Salas de Estudio'].map((item, i) => (
-                <Link 
+              {QUICK_LINKS.map(({ label: item, path }) => (
+                <Link
                   key={item}
-                  to={`/${item.toLowerCase().replace(/ /g, '-')}`} 
+                  to={path}
                   className="hover:text-brand-yellow transition-all hover:scale-105 transform inline-block relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-brand-yellow hover:after:w-full after:transition-all"
                 >
                   {item}
@@ -245,15 +300,181 @@ export default function Inicio() {
         </div>
       </section>
 
+      {/* Quick Access Grid: 6 most used tools */}
+      <SectionReveal className="bg-brand-light py-20 md:py-24 relative overflow-hidden border-t border-brand-border">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <Chapter n="02" label="Lo esencial" />
+            <h3 className="text-3xl md:text-5xl font-black text-brand-gray tracking-tighter mb-4">
+              Herramientas <span className="text-brand-blue italic">más usadas</span>
+            </h3>
+            <p className="text-sm md:text-base text-gray-500 font-medium leading-relaxed">
+              Lo que más usa la comunidad Icesi para estudiar, investigar y crear. Un clic y estás dentro.
+            </p>
+          </div>
+
+          {/* Fila única de cajones (6 herramientas en una misma fila) */}
+          <div className="flex lg:grid lg:grid-cols-6 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 gap-3.5 xl:gap-4 no-scrollbar snap-x">
+            {[
+              { 
+                title: 'Bases de datos', 
+                icon: <Database className="w-5 h-5 text-brand-blue" />, 
+                path: '/bases-de-datos', 
+                desc: 'Contenidos digitales y revistas científicas indexadas.', 
+                externalUrl: 'https://basesdedatos.icesi.edu.co' 
+              },
+              { 
+                title: 'Catálogo público (EDS)', 
+                icon: <Book className="w-5 h-5 text-brand-blue" />, 
+                path: '/catalogo-publico', 
+                desc: 'Descubridor EDS y localización física en estanterías.', 
+                externalUrl: 'https://biblioteca-opac.icesi.edu.co' 
+              },
+              { 
+                title: 'Repositorio académico', 
+                icon: <FileText className="w-5 h-5 text-brand-blue" />, 
+                path: '/repositorio-academico', 
+                desc: 'Tesis, producción científica y memoria intelectual.', 
+                externalUrl: 'https://repository.icesi.edu.co' 
+              },
+              { 
+                title: 'Reserva de salas', 
+                icon: <Calendar className="w-5 h-5 text-brand-blue" />, 
+                path: '/reserva-de-salas', 
+                desc: 'Espacios de estudio grupal y co-creación académica.', 
+                externalUrl: 'https://salas.icesi.edu.co' 
+              },
+              { 
+                title: 'Formación y asesoría', 
+                icon: <GraduationCap className="w-5 h-5 text-brand-blue" />, 
+                path: '/formacion-y-asesoria', 
+                desc: 'Talleres en normas APA y asesorías personalizadas.', 
+              },
+              { 
+                title: 'Cultura y creatividad', 
+                icon: <Sparkles className="w-5 h-5 text-brand-blue" />, 
+                path: '/cultura-y-creatividad', 
+                desc: 'Clubes permanentes, tocadiscos, cine foro y eventos.' 
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={`quick-tool-${idx}`}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.05, duration: 0.4 }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="min-w-[210px] sm:min-w-[230px] lg:min-w-0 flex-1 snap-start bg-white border border-brand-border hover:border-brand-blue rounded-xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-1 h-0 bg-brand-blue group-hover:h-full transition-all duration-300" />
+                
+                <div>
+                  <div className="w-10 h-10 bg-brand-light flex items-center justify-center rounded-lg group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 mb-3.5">
+                    {item.icon}
+                  </div>
+                  <h4 className="text-sm sm:text-base font-black text-brand-gray group-hover:text-brand-blue transition-colors tracking-tight leading-snug mb-2 line-clamp-2 min-h-[2.5rem]">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mb-4 line-clamp-3">
+                    {item.desc}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-brand-border/60 flex flex-col gap-1.5 w-full mt-auto">
+                  {item.externalUrl ? (
+                    <>
+                      <a
+                        href={item.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full text-center py-1.5 px-2 bg-black hover:bg-neutral-800 text-white font-bold text-[10px] uppercase tracking-wider rounded-md transition-colors inline-flex items-center justify-center gap-1 shadow-2xs"
+                      >
+                        <span>Ir al servicio</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                      <Link
+                        to={item.path}
+                        className="w-full text-center py-1.5 px-2 border border-brand-border hover:border-brand-blue text-gray-700 hover:text-brand-blue font-bold text-[10px] uppercase tracking-wider rounded-md transition-colors inline-flex items-center justify-center gap-1 bg-brand-light/30 hover:bg-brand-blue/5"
+                      >
+                        <span>Ver detalles</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      className="w-full text-center py-2 px-2 bg-black hover:bg-neutral-800 text-white font-bold text-[10px] uppercase tracking-wider rounded-md transition-colors inline-flex items-center justify-center gap-1 shadow-2xs mt-auto"
+                    >
+                      <span>Ver servicio</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </SectionReveal>
+
+      {/* 04 · Tema del mes — spotlight curado: 1 protagonista + 2 pasos */}
+      <SectionReveal className="bg-black text-white py-16 md:py-24 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/20 rounded-full blur-3xl -mr-40 -mt-40 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+          <div className="max-w-2xl mb-10 md:mb-12">
+            <Chapter n="03" label={THEME_OF_MONTH.eyebrow} tone="yellow" />
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-4">{THEME_OF_MONTH.title}</h2>
+            <p className="text-sm md:text-base text-white/60 font-medium leading-relaxed">{THEME_OF_MONTH.intro}</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <Link
+              to={THEME_OF_MONTH.featured.path}
+              className="lg:col-span-7 group relative flex flex-col justify-end min-h-[280px] p-8 md:p-10 rounded-3xl bg-brand-blue overflow-hidden"
+            >
+              <div className="absolute -bottom-20 -right-20 w-72 h-72 rounded-full border-[40px] border-white/10 group-hover:scale-110 transition-transform duration-700" />
+              <span className="relative text-brand-yellow font-black text-[10px] uppercase tracking-[0.3em] mb-3">{THEME_OF_MONTH.featured.kicker}</span>
+              <h3 className="relative text-2xl md:text-4xl font-black tracking-tight leading-tight mb-3 max-w-md">{THEME_OF_MONTH.featured.title}</h3>
+              <p className="relative text-sm text-white/80 leading-relaxed max-w-md mb-6">{THEME_OF_MONTH.featured.description}</p>
+              <span className="relative inline-flex items-center gap-2 self-start bg-brand-yellow text-brand-gray font-black text-[10px] uppercase tracking-widest px-5 py-3 rounded-full group-hover:gap-4 transition-all">
+                {THEME_OF_MONTH.featured.cta} <ArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+
+            <div className="lg:col-span-5 grid grid-cols-1 gap-5">
+              {THEME_OF_MONTH.items.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="group flex gap-5 p-6 md:p-7 rounded-3xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 transition-all"
+                >
+                  <span className="w-11 h-11 rounded-xl bg-white/10 text-brand-yellow flex items-center justify-center shrink-0 group-hover:bg-brand-yellow group-hover:text-brand-gray transition-colors">
+                    {item.icon}
+                  </span>
+                  <span className="flex flex-col">
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">{item.kicker}</span>
+                    <span className="text-lg font-black leading-snug group-hover:text-brand-yellow transition-colors mb-1">{item.title}</span>
+                    <span className="text-xs text-white/60 leading-relaxed">{item.description}</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SectionReveal>
+
+      {/* Literary Novelties Book Slider Section (Novedades bibliográficas) */}
+      <BookSlider eyebrow="04 — Lee · Colección destacada" />
+
       {/* Main Content: News & Events Priority Grid */}
-      <SectionReveal className="wireframe-section py-20 -mt-10 relative z-20">
+      <SectionReveal className="border-t border-brand-border">
+        <div className="wireframe-section">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           {/* Left Column: News (8/12) */}
           <div className="lg:col-span-8">
             <div className="flex items-end justify-between mb-10 pb-4 border-b border-brand-border">
               <div>
-                <span className="text-brand-blue font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">Lo más reciente</span>
+                <Chapter n="05" label="Participa" />
                 <h3 className="text-4xl md:text-5xl font-black text-brand-gray tracking-tighter">Noticias y novedades</h3>
               </div>
               <Link to="/noticias-y-novedades" className="text-brand-blue font-black text-[10px] uppercase tracking-widest flex items-center gap-2 mb-1 group hover:gap-4 transition-all">
@@ -362,186 +583,66 @@ export default function Inicio() {
           </div>
 
         </div>
+        </div>
       </SectionReveal>
 
-      {/* Quick Access Grid: 6 most used tools */}
-      <SectionReveal className="bg-brand-light py-20 md:py-24 relative overflow-hidden border-t border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-brand-blue font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">Acceso prioritario</span>
-            <h3 className="text-3xl md:text-5xl font-black text-brand-gray tracking-tighter mb-4">
-              Herramientas <span className="text-brand-blue italic">más usadas</span>
+
+      {/* 06 · Puertas abiertas — perfiles como invitación, no como filtro */}
+      <SectionReveal className="border-t border-brand-border">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-4">
+            <Chapter n="06" label="Puertas abiertas" />
+            <h3 className="text-2xl md:text-3xl font-black text-brand-gray tracking-tighter leading-tight mb-3">
+              Un lugar para la comunidad Icesi <span className="text-brand-blue italic">y para quien llegue</span>
             </h3>
-            <p className="text-sm md:text-base text-gray-500 font-medium leading-relaxed">
-              Servicios y plataformas esenciales para el estudio colaborativo, la investigación y la vida cultural en el campus.
+            <p className="text-sm text-gray-500 leading-relaxed">Elige cómo entras y te mostramos lo que tenemos para ti.</p>
+          </div>
+          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {PROFILES.map((p) => (
+              <Link
+                key={p.path}
+                to={p.path}
+                className="group flex items-center gap-3 p-3 pr-4 border border-brand-border hover:border-brand-blue rounded-xl bg-white transition-all"
+              >
+                <span className="w-9 h-9 rounded-lg bg-brand-light border border-brand-border text-brand-blue flex items-center justify-center shrink-0 group-hover:bg-brand-blue group-hover:text-white group-hover:border-brand-blue transition-colors">
+                  {p.icon}
+                </span>
+                <span className="flex-grow min-w-0">
+                  <span className="block text-sm font-black text-brand-gray group-hover:text-brand-blue transition-colors">{p.label}</span>
+                  <span className="block text-[11px] text-gray-500 truncate">{p.hint}</span>
+                </span>
+                <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-brand-blue group-hover:translate-x-1 transition-all shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </SectionReveal>
+
+      {/* 07 · Sigue explorando — cierre suave con 3 recomendados curados */}
+      <SectionReveal className="bg-brand-light border-t border-brand-border py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+            <div>
+              <Chapter n="07" label="Sigue explorando" />
+              <h3 className="text-3xl md:text-4xl font-black text-brand-gray tracking-tighter">¿Ya conocías esto?</h3>
+            </div>
+            <p className="text-sm text-gray-500 font-medium max-w-sm">
+              La biblioteca es más que libros: tres servicios que la comunidad Icesi suele descubrir tarde.
             </p>
           </div>
-
-          {/* Fila única de cajones (6 herramientas en una misma fila) */}
-          <div className="flex lg:grid lg:grid-cols-6 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 gap-3.5 xl:gap-4 no-scrollbar snap-x">
-            {[
-              { 
-                title: 'Bases de datos', 
-                icon: <Database className="w-5 h-5 text-brand-blue" />, 
-                path: '/bases-de-datos', 
-                desc: 'Contenidos digitales y revistas científicas indexadas.', 
-                externalUrl: 'https://basesdedatos.icesi.edu.co' 
-              },
-              { 
-                title: 'Catálogo público (EDS)', 
-                icon: <Book className="w-5 h-5 text-brand-blue" />, 
-                path: '/catalogo-publico', 
-                desc: 'Descubridor EDS y localización física en estanterías.', 
-                externalUrl: 'https://biblioteca-opac.icesi.edu.co' 
-              },
-              { 
-                title: 'Repositorio académico', 
-                icon: <FileText className="w-5 h-5 text-brand-blue" />, 
-                path: '/repositorio-academico', 
-                desc: 'Tesis, producción científica y memoria intelectual.', 
-                externalUrl: 'https://repository.icesi.edu.co' 
-              },
-              { 
-                title: 'Reserva de salas', 
-                icon: <Calendar className="w-5 h-5 text-brand-blue" />, 
-                path: '/reserva-de-salas', 
-                desc: 'Espacios de estudio grupal y co-creación académica.', 
-                externalUrl: 'https://salas.icesi.edu.co' 
-              },
-              { 
-                title: 'Formación y asesoría', 
-                icon: <GraduationCap className="w-5 h-5 text-brand-blue" />, 
-                path: '/formacion-y-asesoria', 
-                desc: 'Talleres en normas APA y asesorías personalizadas.', 
-              },
-              { 
-                title: 'Cultura y creatividad', 
-                icon: <Sparkles className="w-5 h-5 text-brand-blue" />, 
-                path: '/cultura-y-creatividad', 
-                desc: 'Clubes permanentes, tocadiscos, cine foro y eventos.' 
-              },
-            ].map((item, idx) => (
-              <motion.div
-                key={`quick-tool-${idx}`}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05, duration: 0.4 }}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="min-w-[210px] sm:min-w-[230px] lg:min-w-0 flex-1 snap-start bg-white border border-brand-border hover:border-brand-blue rounded-xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 w-1 h-0 bg-brand-blue group-hover:h-full transition-all duration-300" />
-                
-                <div>
-                  <div className="w-10 h-10 bg-brand-light flex items-center justify-center rounded-lg group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 mb-3.5">
-                    {item.icon}
-                  </div>
-                  <h4 className="text-sm sm:text-base font-black text-brand-gray group-hover:text-brand-blue transition-colors tracking-tight leading-snug mb-2 line-clamp-2 min-h-[2.5rem]">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed mb-4 line-clamp-3">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-brand-border/60 flex flex-col gap-1.5 w-full mt-auto">
-                  {item.externalUrl ? (
-                    <>
-                      <a
-                        href={item.externalUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full text-center py-1.5 px-2 bg-black hover:bg-neutral-800 text-white font-bold text-[10px] uppercase tracking-wider rounded-md transition-colors inline-flex items-center justify-center gap-1 shadow-2xs"
-                      >
-                        <span>Ir al servicio</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                      <Link
-                        to={item.path}
-                        className="w-full text-center py-1.5 px-2 border border-brand-border hover:border-brand-blue text-gray-700 hover:text-brand-blue font-bold text-[10px] uppercase tracking-wider rounded-md transition-colors inline-flex items-center justify-center gap-1 bg-brand-light/30 hover:bg-brand-blue/5"
-                      >
-                        <span>Ver detalles</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </Link>
-                    </>
-                  ) : (
-                    <Link
-                      to={item.path}
-                      className="w-full text-center py-2 px-2 bg-black hover:bg-neutral-800 text-white font-bold text-[10px] uppercase tracking-wider rounded-md transition-colors inline-flex items-center justify-center gap-1 shadow-2xs mt-auto"
-                    >
-                      <span>Ver servicio</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  )}
-                </div>
-              </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {KEEP_EXPLORING.map((item, i) => (
+              <WireframeCard key={item.path} title={item.title} description={item.description} path={item.path} icon={item.icon} variant="compact" index={i} />
             ))}
           </div>
+          <p className="mt-12 text-center text-sm md:text-base font-bold text-brand-gray">
+            ¿No encuentras lo que buscas?{' '}
+            <Link to="/contacto" className="text-brand-blue underline decoration-brand-yellow decoration-4 underline-offset-4 hover:decoration-brand-blue transition-colors">
+              Habla con un bibliotecario
+            </Link>
+          </p>
         </div>
       </SectionReveal>
-
-      {/* Literary Novelties Book Slider Section (Novedades bibliográficas) */}
-      <BookSlider />
-
-      {/* Yo soy Section: 3 low cards on black background */}
-      <section className="bg-black py-16 md:py-20 text-white relative overflow-hidden border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center">
-          <span className="text-brand-yellow font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">
-            Acceso por perfil
-          </span>
-          <h2 className="text-3xl md:text-5xl font-black mb-10 tracking-tight">Yo soy</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
-            {[
-              { 
-                label: 'Estudiante', 
-                icon: <Users className="w-5 h-5 text-emerald-400" />, 
-                path: '/yo-soy/estudiante', 
-                desc: 'Salas de estudio, préstamo de portátiles, libros físicos y talleres de formación.' 
-              },
-              { 
-                label: 'Profesor', 
-                icon: <GraduationCap className="w-5 h-5 text-brand-yellow" />, 
-                path: '/yo-soy/profesor', 
-                desc: 'Vigilancia estratégica, compra de material bibliográfico, sílabos y apoyo docente.' 
-              },
-              { 
-                label: 'Egresado', 
-                icon: <Bookmark className="w-5 h-5 text-sky-400" />, 
-                path: '/yo-soy/graduado', 
-                desc: 'Beneficios continuos, consulta en sala ilimitada y préstamo externo a domicilio.' 
-              },
-            ].map((p, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link 
-                  to={p.path} 
-                  className="group relative block p-6 border border-white/10 hover:border-white/30 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] transition-all h-full flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                        {p.icon}
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-brand-yellow group-hover:translate-x-1 transition-all" />
-                    </div>
-                    <h3 className="text-xl font-black mb-2 group-hover:text-brand-yellow transition-colors">{p.label}</h3>
-                    <p className="text-xs text-white/70 leading-relaxed">{p.desc}</p>
-                  </div>
-                  <div className="pt-4 mt-4 border-t border-white/5 flex items-center text-[11px] font-bold uppercase tracking-wider text-brand-yellow">
-                    <span>Ir a mi panel</span>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

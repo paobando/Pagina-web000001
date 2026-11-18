@@ -172,7 +172,7 @@ const CATEGORIES = [
   { id: 'economia', label: 'Economía & Negocios' }
 ];
 
-export default function BookSlider() {
+export default function BookSlider({ eyebrow = 'Colección Destacada' }: { eyebrow?: string } = {}) {
   const [selectedCategory, setSelectedCategory] = useState('todos');
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -221,7 +221,7 @@ export default function BookSlider() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
-            <span className="text-brand-blue font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">Colección Destacada</span>
+            <span className="text-brand-blue font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">{eyebrow}</span>
             <h2 className="text-3xl md:text-5xl font-black text-brand-gray tracking-tighter leading-none mb-3">
               Novedades <span className="text-brand-blue italic relative inline-block">bibliográficas<div className="absolute bottom-1 left-0 w-full h-1 bg-brand-yellow/50 -z-10" /></span>
             </h2>

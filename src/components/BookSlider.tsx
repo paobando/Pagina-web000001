@@ -172,7 +172,7 @@ const CATEGORIES = [
   { id: 'economia', label: 'Economía & Negocios' }
 ];
 
-export default function BookSlider({ eyebrow = 'Colección Destacada' }: { eyebrow?: string } = {}) {
+export default function BookSlider({ eyebrow }: { eyebrow?: React.ReactNode } = {}) {
   const [selectedCategory, setSelectedCategory] = useState('todos');
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -221,11 +221,11 @@ export default function BookSlider({ eyebrow = 'Colección Destacada' }: { eyebr
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
-            <span className="text-brand-blue font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">{eyebrow}</span>
-            <h2 className="text-3xl md:text-5xl font-black text-brand-gray tracking-tighter leading-none mb-3">
-              Novedades <span className="text-brand-blue italic relative inline-block">bibliográficas<div className="absolute bottom-1 left-0 w-full h-1 bg-brand-yellow/50 -z-10" /></span>
+            {eyebrow ?? <p className="eyebrow text-brand-gray">Colección destacada</p>}
+            <h2 className="section-title mb-3">
+              Novedades <span className="text-brand-blue">bibliográficas</span>
             </h2>
-            <p className="text-gray-400 text-sm font-medium leading-relaxed max-w-lg">
+            <p className="text-brand-gray/80 text-base leading-[1.3] max-w-2xl">
               Descubre las adquisiciones más recientes, títulos recomendados y obras más solicitadas por la comunidad.
             </p>
           </div>
@@ -234,14 +234,14 @@ export default function BookSlider({ eyebrow = 'Colección Destacada' }: { eyebr
           <div className="flex gap-3 justify-end items-center">
             <button
               onClick={() => scroll('left')}
-              className="w-12 h-12 rounded-full border border-brand-border hover:border-brand-blue hover:text-brand-blue flex items-center justify-center transition-all bg-white shadow-sm"
+              className="w-12 h-12 border border-brand-border hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white"
               aria-label="Anterior"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scroll('right')}
-              className="w-12 h-12 rounded-full border border-brand-border hover:border-brand-blue hover:text-brand-blue flex items-center justify-center transition-all bg-white shadow-sm"
+              className="w-12 h-12 border border-brand-border hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white"
               aria-label="Siguiente"
             >
               <ChevronRight className="w-5 h-5" />
@@ -255,10 +255,10 @@ export default function BookSlider({ eyebrow = 'Colección Destacada' }: { eyebr
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+              className={`px-3 py-1.5 text-xs border transition-all duration-200 ${
                 selectedCategory === cat.id
-                  ? 'bg-brand-gray text-white shadow-lg shadow-brand-gray/15'
-                  : 'bg-brand-light border border-brand-border text-brand-gray/60 hover:text-brand-blue hover:border-brand-blue/30'
+                  ? 'bg-black border-black text-white'
+                  : 'bg-white border-brand-border text-brand-gray/70 hover:text-brand-blue hover:border-brand-blue'
               }`}
             >
               {cat.label}

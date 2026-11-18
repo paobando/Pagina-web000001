@@ -3,11 +3,34 @@
 
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --color-brand-blue: #5454E9;
-  --color-brand-yellow: #E4EB60;
-  --color-brand-gray: #333333;
-  --color-brand-light: #F8F9FA;
-  --color-brand-border: #E5E7EB;
+
+  /* Colores — prototipo "Bib UX" (Figma) */
+  --color-brand-blue: #5454E9;     /* Colores/Azul */
+  --color-brand-yellow: #E4EB60;   /* Colores/Amarillo */
+  --color-brand-purple: #865CF0;   /* Colores/Morado */
+  --color-brand-green: #4CB979;    /* Colores/Verde */
+  --color-brand-orange: #FF6735;   /* Colores/naranja fuerte */
+  --color-brand-gray: #27272A;     /* Neutrales/Gray 500 — texto principal */
+  --color-brand-gray-400: #404040; /* Neutrales/Gray 400 — bordes sobre negro */
+  --color-brand-gray-200: #ABACAE; /* Neutrales/Gray 200 */
+  --color-brand-muted: #88898C;    /* Colores/Gris — metadatos */
+  --color-brand-light: #F7F9FB;    /* BG */
+  --color-brand-border: #CECFD4;   /* Colores/Gris claro */
+
+  /* Bordes rectos en todo el sitio (el prototipo no usa esquinas redondeadas).
+     `rounded-full` se conserva para puntos y elementos circulares. */
+  --radius: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+
+  /* Drop shadow | Cards */
+  --shadow-card: 0 2px 15px rgba(0, 0, 0, 0.12);
 }
 
 @layer base {
@@ -15,24 +38,41 @@
     @apply bg-white text-brand-gray font-sans antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold;
+    line-height: 1.3;
   }
 }
 
 @layer components {
+  /* Tarjeta del prototipo: blanca, recta, sombra suave, padding 32px */
   .wireframe-card {
-    @apply bg-white border border-brand-border shadow-sm p-6 hover:shadow-md transition-shadow duration-200;
+    @apply bg-white shadow-card p-8 hover:shadow-lg transition-shadow duration-200;
   }
+  /* Botón primario: azul, recto, 14px bold, alto 40px */
   .wireframe-button-primary {
-    @apply bg-brand-blue text-white px-6 py-3 font-semibold hover:opacity-90 transition-all duration-200 inline-flex items-center justify-center;
+    @apply bg-brand-blue text-white h-10 px-4 text-sm font-bold hover:opacity-90 transition-all duration-200 inline-flex items-center justify-center gap-1;
   }
+  /* Botón secundario: blanco con borde negro (como "Ver calendario completo") */
   .wireframe-button-secondary {
-    @apply border-2 border-brand-blue text-brand-blue px-6 py-3 font-semibold hover:bg-brand-blue hover:text-white transition-all duration-200 inline-flex items-center justify-center;
+    @apply bg-white border border-black text-black h-10 px-4 text-sm font-bold hover:bg-black hover:text-white transition-all duration-200 inline-flex items-center justify-center gap-1;
   }
   .wireframe-input {
     @apply w-full border border-brand-border p-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent;
   }
   .wireframe-section {
     @apply py-12 md:py-20 px-4 md:px-8 max-w-7xl mx-auto;
+  }
+
+  /* Texto sobre título (Headings/H4 ExtraLight 24px) */
+  .eyebrow {
+    @apply text-lg md:text-2xl font-extralight leading-[1.3];
+  }
+  /* Título de sección (Headings/H2 Bold 52px) */
+  .section-title {
+    @apply text-3xl md:text-[52px] font-bold leading-[1.3] text-brand-gray;
+  }
+  /* Chip: color al 10% de fondo, texto 11px */
+  .chip {
+    @apply inline-flex items-center px-2 py-1 text-[11px] leading-[1.3];
   }
 }

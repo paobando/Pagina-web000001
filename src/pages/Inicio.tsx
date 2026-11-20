@@ -18,15 +18,24 @@ const QUICK_LINKS = [
   { label: 'Salas de estudio', path: '/reserva-de-salas' },
 ];
 
-type CardItem = { title: string; description: string; path: string; icon: React.ReactNode; externalUrl?: string };
+type Pillar = 'investigacion' | 'creatividad' | 'cultura';
+
+/** Cada pilar vive en un piso; su color viene del elemento de ese piso. */
+const PILLARS: Record<Pillar, { label: string; bar: string; dot: string; chipDark: string }> = {
+  investigacion: { label: 'Investigación', bar: 'bg-aire', dot: 'bg-aire ring-1 ring-black/20', chipDark: 'bg-aire/15 text-aire' },
+  creatividad: { label: 'Creatividad', bar: 'bg-agua', dot: 'bg-agua', chipDark: 'bg-agua/25 text-[#A9A9FF]' },
+  cultura: { label: 'Cultura', bar: 'bg-tierra', dot: 'bg-tierra', chipDark: 'bg-tierra/15 text-tierra' },
+};
+
+type CardItem = { title: string; description: string; path: string; icon: React.ReactNode; externalUrl?: string; pillar?: Pillar };
 
 const ESSENTIAL_TOOLS: CardItem[] = [
-  { title: 'Bases de datos', icon: <Database className="w-5 h-5" />, path: '/bases-de-datos', description: 'Contenidos digitales y revistas científicas indexadas.', externalUrl: 'https://basesdedatos.icesi.edu.co' },
-  { title: 'Catálogo público', icon: <Book className="w-5 h-5" />, path: '/catalogo-publico', description: 'Libros físicos, revistas y material impreso.', externalUrl: 'https://biblioteca-opac.icesi.edu.co' },
-  { title: 'Repositorio', icon: <FileText className="w-5 h-5" />, path: '/repositorio-academico', description: 'Tesis y producción académica icesista.', externalUrl: 'https://repository.icesi.edu.co' },
-  { title: 'Reserva de salas', icon: <DoorOpen className="w-5 h-5" />, path: '/reserva-de-salas', description: 'Espacios individuales y grupales.', externalUrl: 'https://salas.icesi.edu.co' },
-  { title: 'Formación y asesoría', icon: <GraduationCap className="w-5 h-5" />, path: '/formacion-y-asesoria', description: 'Talleres de búsqueda y citación APA.' },
-  { title: 'Cultura y creatividad', icon: <Sparkles className="w-5 h-5" />, path: '/cultura-y-creatividad', description: 'Clubes, cineforo, vinilos y eventos.' },
+  { pillar: 'investigacion', title: 'Bases de datos', icon: <Database className="w-5 h-5" />, path: '/bases-de-datos', description: 'Contenidos digitales y revistas científicas indexadas.', externalUrl: 'https://basesdedatos.icesi.edu.co' },
+  { pillar: 'investigacion', title: 'Catálogo público', icon: <Book className="w-5 h-5" />, path: '/catalogo-publico', description: 'Libros físicos, revistas y material impreso.', externalUrl: 'https://biblioteca-opac.icesi.edu.co' },
+  { pillar: 'investigacion', title: 'Repositorio', icon: <FileText className="w-5 h-5" />, path: '/repositorio-academico', description: 'Tesis y producción académica icesista.', externalUrl: 'https://repository.icesi.edu.co' },
+  { pillar: 'creatividad', title: 'Reserva de salas', icon: <DoorOpen className="w-5 h-5" />, path: '/reserva-de-salas', description: 'Espacios individuales y grupales.', externalUrl: 'https://salas.icesi.edu.co' },
+  { pillar: 'investigacion', title: 'Formación y asesoría', icon: <GraduationCap className="w-5 h-5" />, path: '/formacion-y-asesoria', description: 'Talleres de búsqueda y citación APA.' },
+  { pillar: 'cultura', title: 'Cultura y creatividad', icon: <Sparkles className="w-5 h-5" />, path: '/cultura-y-creatividad', description: 'Clubes, cineforo, vinilos y eventos.' },
 ];
 
 const PROFILES = [
@@ -34,6 +43,13 @@ const PROFILES = [
   { label: 'Profesores', icon: <Smile className="w-10 h-10" strokeWidth={1.25} />, path: '/yo-soy/profesor', hint: 'Ingresar al panel' },
   { label: 'Graduados', icon: <GraduationCap className="w-10 h-10" strokeWidth={1.25} />, path: '/yo-soy/graduado', hint: 'Ingresar al panel' },
   { label: 'Visitantes', icon: <Globe className="w-10 h-10" strokeWidth={1.25} />, path: '/la-biblioteca', hint: 'Horarios y acceso' },
+];
+
+// Los tres pisos: elemento (discreto) → pilar (protagonista). Nombres de piso tomados del prototipo (tentativos).
+const FLOORS = [
+  { n: 3, element: 'Aire', name: 'Flor', pillar: 'investigacion' as Pillar, verb: 'Para leer', desc: 'Estantería abierta, lectura individual y espacios de concentración.', mood: 'Silencio', block: 'bg-aire text-black', path: '/catalogo-publico' },
+  { n: 2, element: 'Agua', name: 'Brote', pillar: 'creatividad' as Pillar, verb: 'Para experimentar', desc: 'Laboratorio, co-creación y salas para proyectos.', mood: 'Voz baja', block: 'bg-agua text-white', path: '/reserva-de-salas' },
+  { n: 1, element: 'Tierra', name: 'Raíz', pillar: 'cultura' as Pillar, verb: 'Para interactuar', desc: 'Encuentros, eventos, trabajo en grupo y punto de atención.', mood: 'Conversación libre', block: 'bg-tierra text-black', path: '/cultura-y-creatividad' },
 ];
 
 // "Tema del mes": 1 pieza protagonista + 2 secundarias unidas por un mismo relato.
@@ -59,11 +75,8 @@ const KEEP_EXPLORING: CardItem[] = [
 ];
 
 // Colores de chip por tipo de evento (color al 10% de fondo, como en el prototipo).
-const CHIP_TONE: Record<string, string> = {
-  Formación: 'bg-brand-yellow/10 text-brand-yellow',
-  Cultura: 'bg-brand-orange/10 text-brand-orange',
-  Virtual: 'bg-brand-blue/15 text-[#8C8CF5]',
-};
+const EVENT_PILLAR: Record<string, Pillar> = { Formación: 'investigacion', Cultura: 'cultura', Virtual: 'investigacion' };
+const NEWS_PILLAR: Record<string, Pillar | undefined> = { Recursos: 'investigacion', Cultura: 'cultura' };
 
 /* ------------------------------------------------------------------ */
 /* Piezas reutilizables                                                */
@@ -83,11 +96,13 @@ function Eyebrow({ n, children, dark = false, className = '' }: { n?: string; ch
 const ToolCard: React.FC<{ item: CardItem }> = ({ item }) => {
   return (
     <div className="group relative bg-white shadow-card hover:shadow-lg transition-shadow p-6 flex flex-col gap-6 h-full">
+      {item.pillar && <span className={`absolute top-0 inset-x-0 h-1 ${PILLARS[item.pillar].bar}`} aria-hidden="true" />}
       <span className="w-[52px] h-[52px] bg-brand-border/20 text-brand-gray flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-colors">
         {item.icon}
       </span>
       <div className="flex flex-col gap-4 opacity-60 group-hover:opacity-100 transition-opacity flex-grow">
         <div className="flex flex-col gap-[11px]">
+          {item.pillar && <span className="text-xs text-black">{PILLARS[item.pillar].label}</span>}
           <Link to={item.path} className="text-lg font-bold leading-[1.3] text-black after:absolute after:inset-0">
             {item.title}
           </Link>
@@ -168,7 +183,9 @@ export default function Inicio() {
         <div className="relative max-w-7xl mx-auto px-4 md:px-8 w-full z-10 text-center">
           <Eyebrow n="01" dark>Explora el conocimiento</Eyebrow>
           <h1 className="text-[34px] sm:text-5xl md:text-6xl lg:text-[64px] font-bold text-white leading-[1.15] mt-2 mb-10 max-w-5xl mx-auto text-balance">
-            Conocimiento, creatividad y cultura, <span className="text-brand-yellow">abiertos a todos.</span>
+            <span className="underline decoration-aire decoration-[6px] underline-offset-[10px]">Investigación</span>,{' '}
+            <span className="underline decoration-tierra decoration-[6px] underline-offset-[10px]">cultura</span> y{' '}
+            <span className="underline decoration-agua decoration-[6px] underline-offset-[10px]">creatividad</span>, abiertas a todos.
           </h1>
 
           <motion.div
@@ -288,7 +305,7 @@ export default function Inicio() {
               to={THEME_OF_MONTH.featured.path}
               className="lg:col-span-7 group flex flex-col justify-end min-h-[300px] p-8 md:p-12 bg-brand-blue text-white"
             >
-              <span className="chip self-start bg-brand-yellow/15 text-brand-yellow mb-4">{THEME_OF_MONTH.featured.kicker}</span>
+              <span className="chip self-start bg-fuego text-black font-bold mb-4">{THEME_OF_MONTH.featured.kicker}</span>
               <h3 className="text-[28px] md:text-[32px] font-bold leading-[1.3] mb-3 max-w-md">{THEME_OF_MONTH.featured.title}</h3>
               <p className="text-base leading-[1.3] text-white/80 max-w-md mb-8">{THEME_OF_MONTH.featured.description}</p>
               <span className="self-start inline-flex items-center gap-1 h-10 px-4 bg-white text-black text-sm font-bold group-hover:bg-brand-yellow transition-colors">
@@ -335,11 +352,11 @@ export default function Inicio() {
             <Link to={`/noticia/${news[0].id}`} className="group flex flex-col gap-6">
               <div className="relative aspect-[797/424] bg-brand-gray flex items-center justify-center overflow-hidden">
                 <span className="text-white/20 font-bold text-xl md:text-2xl">Imagen destacada</span>
-                <span className="chip absolute bottom-6 right-6 bg-brand-yellow/10 text-brand-yellow">Destacada</span>
+                <span className="chip absolute bottom-6 right-6 bg-fuego text-black font-bold">Destacada</span>
               </div>
               <div className="flex flex-col gap-3.5 py-4">
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-bold text-brand-blue">{news[0].category}</span>
+                  <span className="inline-flex items-center gap-2 text-lg font-bold text-brand-blue">{NEWS_PILLAR[news[0].category] && <span className={`w-2.5 h-2.5 ${PILLARS[NEWS_PILLAR[news[0].category]!].dot}`} title={PILLARS[NEWS_PILLAR[news[0].category]!].label} />}{news[0].category}</span>
                   <span className="text-sm text-brand-muted">•</span>
                   <span className="text-sm text-brand-muted">{news[0].date}</span>
                 </div>
@@ -352,7 +369,7 @@ export default function Inicio() {
               {news.slice(1).map((item) => (
                 <Link key={item.id} to={`/noticia/${item.id}`} className="group flex flex-col gap-3.5 py-4 border-t border-brand-border">
                   <div className="flex items-center gap-4">
-                    <span className="text-lg font-bold text-brand-blue">{item.category}</span>
+                    <span className="inline-flex items-center gap-2 text-lg font-bold text-brand-blue">{NEWS_PILLAR[item.category] && <span className={`w-2.5 h-2.5 ${PILLARS[NEWS_PILLAR[item.category]!].dot}`} title={PILLARS[NEWS_PILLAR[item.category]!].label} />}{item.category}</span>
                     <span className="text-sm text-brand-muted">•</span>
                     <span className="text-sm text-brand-muted">{item.date}</span>
                   </div>
@@ -371,7 +388,7 @@ export default function Inicio() {
                 <h2 className="section-title !text-white">Próximos eventos</h2>
               </div>
               <ul className="flex flex-col gap-4">
-                {events.map((event) => (
+                {events.map((event, i) => (
                   <li key={event.id}>
                     <Link to={`/agenda/evento/${event.id}`} className="group flex items-center gap-6">
                       <span className="w-20 h-20 shrink-0 bg-brand-gray flex flex-col items-center justify-center group-hover:bg-brand-yellow group-hover:text-black transition-colors">
@@ -379,7 +396,10 @@ export default function Inicio() {
                         <span className="text-xs leading-[1.3]">{event.month}</span>
                       </span>
                       <span className="flex flex-col gap-2 min-w-0">
-                        <span className={`chip self-start ${CHIP_TONE[event.type] ?? 'bg-white/10 text-white'}`}>{event.type}</span>
+                        <span className="flex items-center gap-2">
+                          <span className={`chip ${PILLARS[EVENT_PILLAR[event.type] ?? 'investigacion'].chipDark}`}>{event.type}</span>
+                          {i === 0 && <span className="chip bg-fuego text-black font-bold">Próximo</span>}
+                        </span>
                         <span className="flex flex-col gap-1">
                           <span className="text-lg font-bold leading-[1.3] group-hover:text-brand-yellow transition-colors">{event.title}</span>
                           <span className="text-sm leading-[1.3] opacity-60">{event.time}</span>
@@ -400,11 +420,71 @@ export default function Inicio() {
         </div>
       </SectionReveal>
 
-      {/* 06 · Puertas abiertas — perfiles como invitación, no como filtro */}
+      {/* 06 · La biblioteca por pisos — cada piso, un pilar; el fuego los atraviesa */}
+      <SectionReveal className="bg-white py-16 md:py-24 border-t border-brand-border">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div className="lg:col-span-5 flex flex-col gap-6">
+            <Eyebrow n="06">Tres pisos, tres pilares</Eyebrow>
+            <h2 className="section-title -mt-6 lg:!text-[44px]">Explora la biblioteca <span className="text-brand-blue">por pisos</span></h2>
+            <p className="text-base leading-[1.3] text-brand-gray/80">
+              Cada piso está pensado para algo distinto: investigar en silencio, crear en equipo o encontrarnos. La curiosidad los conecta todos.
+            </p>
+            <ul className="border-t border-brand-border">
+              {[
+                { label: '¿Cómo encuentro un libro en la estantería abierta?', path: '/preguntas-frecuentes' },
+                { label: 'Préstamos: libros, portátiles y salas', path: '/prestamo-de-material-impreso' },
+                { label: 'Reserva un espacio para tu proyecto', path: '/reserva-de-salas' },
+              ].map((l) => (
+                <li key={l.path}>
+                  <Link to={l.path} className="group flex items-center justify-between gap-4 py-3.5 border-b border-brand-border text-sm font-bold text-brand-gray hover:text-brand-blue transition-colors">
+                    {l.label} <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link to="/la-biblioteca" className="wireframe-button-primary self-start !bg-black hover:!bg-brand-blue">Conoce la biblioteca</Link>
+          </div>
+
+          <div className="lg:col-span-7">
+            <div className="relative pl-5 md:pl-7">
+              {/* Fuego: línea transversal que atraviesa los tres pisos */}
+              <span className="absolute left-0 top-0 bottom-8 w-1 bg-fuego" aria-hidden="true" />
+              <span className="block h-1.5 bg-black mb-3" aria-hidden="true" />
+              <ol className="flex flex-col gap-3">
+                {FLOORS.map((f) => (
+                  <li key={f.n}>
+                    <Link to={f.path} className="group flex items-stretch bg-white border border-brand-border hover:border-black transition-colors">
+                      <span className={`w-20 md:w-28 shrink-0 flex items-center justify-center text-5xl md:text-7xl font-bold ${f.block}`}>{f.n}</span>
+                      <span className="flex-grow min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 md:p-6">
+                        <span className="flex flex-col gap-1 min-w-0">
+                          <span className="text-[11px] text-brand-muted">Piso {f.n} · {f.element} · {f.verb}</span>
+                          <span className="text-xl md:text-2xl font-bold leading-[1.3] text-brand-gray group-hover:text-brand-blue transition-colors">{PILLARS[f.pillar].label}</span>
+                          <span className="text-sm leading-[1.3] text-brand-gray/70"><span className="font-bold text-brand-gray">{f.name}.</span> {f.desc}</span>
+                        </span>
+                        <span className="flex sm:flex-col items-center sm:items-end gap-2 shrink-0">
+                          <span className="text-[11px] text-brand-muted">Ambiente</span>
+                          <span className="text-sm font-bold text-brand-gray">{f.mood}</span>
+                          <ArrowRight className="w-4 h-4 text-brand-gray group-hover:translate-x-1 group-hover:text-brand-blue transition-all" />
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+              <div className="flex flex-wrap items-center justify-between gap-2 mt-3 text-[11px]">
+                <span className="font-bold text-brand-gray">↑ Entrada principal</span>
+                <span className="font-bold text-fuego-ink">La curiosidad atraviesa todos los pisos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </SectionReveal>
+
+      {/* 07 · Puertas abiertas — perfiles como invitación, no como filtro */}
       <SectionReveal className="bg-black text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-12 md:mb-16">
-            <Eyebrow n="06" dark>Puertas abiertas</Eyebrow>
+            <Eyebrow n="07" dark>Puertas abiertas</Eyebrow>
             <h2 className="section-title !text-white">
               Diseñado para <span className="text-brand-yellow">todos.</span>
             </h2>
@@ -432,7 +512,7 @@ export default function Inicio() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
             <div>
-              <Eyebrow n="07">Sigue explorando</Eyebrow>
+              <Eyebrow n="08">Sigue explorando</Eyebrow>
               <h2 className="section-title">¿Ya conocías <span className="text-brand-green">esto?</span></h2>
             </div>
             <p className="text-base leading-[1.3] text-brand-gray/80 max-w-sm">

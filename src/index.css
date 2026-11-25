@@ -17,17 +17,18 @@
   --color-brand-light: #F7F9FB;    /* BG */
   --color-brand-border: #CECFD4;   /* Colores/Gris claro */
 
-  /* Pisos y elementos — cada piso se asocia a un pilar.
+  /* Territorio de saberes — colores tomados del documento de identidad de la Biblioteca.
      Piso 1 · Tierra → Cultura · Piso 2 · Agua → Creatividad · Piso 3 · Aire → Investigación.
      El fuego es transversal: solo marca lo "vivo" (destacados, próximo evento, foco). */
-  --color-tierra: #4CB979;
-  --color-agua: #5454E9;
-  --color-aire: #E4EB60;
-  --color-fuego: #FF6735;
-  /* Versiones oscuras para texto pequeño sobre blanco (contraste ≥ 4.5:1) */
-  --color-tierra-ink: #1F7A45;
-  --color-aire-ink: #626600;
-  --color-fuego-ink: #B83A10;
+  --color-tierra: #44BD72;
+  --color-agua: #4854AE;
+  --color-aire: #BED324;
+  --color-fuego: #F25934;
+  /* Versiones para texto accesible (contraste ≥ 4.5:1) */
+  --color-tierra-ink: #1F7A45;  /* sobre blanco */
+  --color-aire-ink: #5C6600;    /* sobre blanco */
+  --color-aire-deep: #2E347A;   /* texto sobre fondo aire */
+  --color-fuego-ink: #B83A10;   /* sobre blanco */
 
   /* Bordes rectos en todo el sitio (el prototipo no usa esquinas redondeadas).
      `rounded-full` se conserva para puntos y elementos circulares. */

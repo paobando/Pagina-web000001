@@ -3,6 +3,10 @@ import { Search, Menu, X, User, Globe, Mail, Phone, ChevronDown, ArrowRight, Vid
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SearchModal } from './SearchModal';
+import simboloTierraBlanco from '../assets/territorio/simbolo-tierra-blanco.svg';
+import simboloFuegoBlanco from '../assets/territorio/simbolo-fuego-blanco.svg';
+import simboloAguaBlanco from '../assets/territorio/simbolo-agua-blanco.svg';
+import simboloAireBlanco from '../assets/territorio/simbolo-aire-blanco.svg';
 
 interface SubNavItem {
   label: string;
@@ -362,17 +366,20 @@ export function Footer() {
           
           {/* Col 1: Identity & Description */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-white text-[#5454E9] flex items-center justify-center font-black text-lg rounded-sm shadow-xs">
-                B
+            {/* Firma "Biblioteca · Territorio de saberes" */}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2.5">
+                <span className="text-white font-bold text-lg leading-none">Biblioteca</span>
+                <span className="flex items-center gap-1" aria-hidden="true">
+                  {[simboloTierraBlanco, simboloFuegoBlanco, simboloAguaBlanco, simboloAireBlanco].map((src, i) => (
+                    <img key={i} src={src} alt="" className="h-4 w-auto" />
+                  ))}
+                </span>
               </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-white font-black text-lg tracking-tight">Biblioteca</span>
-                <span className="text-white/80 text-[10px] font-bold uppercase tracking-widest">Universidad Icesi</span>
-              </div>
+              <span className="text-white text-xl font-extralight leading-tight">Territorio de saberes</span>
             </div>
             <p className="text-white/90 text-xs sm:text-sm leading-relaxed max-w-sm">
-              Espacio integral para el aprendizaje, la investigación y la cultura. Conectamos a la comunidad universitaria con el conocimiento global.
+              Un territorio de saberes para la investigación, la cultura y la creatividad, abierto a la comunidad Icesi y a quien nos visite.
             </p>
             <div className="flex items-center gap-3 pt-1">
               <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Síguenos:</span>

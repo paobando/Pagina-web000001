@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { ELEMENTOS, elementoDeRuta, type Elemento } from '../constants/territorio';
 import { ChevronRight, ArrowRight, Clock, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -83,21 +84,15 @@ export const WireframeCard: React.FC<WireframeCardProps> = ({
 
 export function Breadcrumbs({ items }: { items: { label: string; path?: string }[] }) {
   return (
-    <nav className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-8 overflow-hidden">
+    <nav aria-label="Ruta de navegación" className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs md:text-sm text-brand-muted mb-6">
       <Link to="/inicio" className="hover:text-brand-blue transition-colors">Inicio</Link>
       {items.map((item, index) => (
-        <div key={index} className="flex items-center space-x-2">
-          <ChevronRight className="w-3 h-3 opacity-50" />
+        <div key={index} className="flex items-center gap-2">
+          <ChevronRight className="w-3.5 h-3.5 opacity-60" />
           {item.path ? (
             <Link to={item.path} className="hover:text-brand-blue transition-colors">{item.label}</Link>
           ) : (
-            <motion.span 
-              initial={{ opacity: 0, x: -5 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="text-brand-gray"
-            >
-              {item.label}
-            </motion.span>
+            <span className="text-brand-gray" aria-current="page">{item.label}</span>
           )}
         </div>
       ))}
@@ -105,30 +100,42 @@ export function Breadcrumbs({ items }: { items: { label: string; path?: string }
   );
 }
 
-export function PageHeader({ title, description, breadcrumbs }: { title: string; description: string; breadcrumbs: { label: string; path?: string }[] }) {
+/**
+ * Cabecera de las páginas internas. Hereda, de forma discreta, el elemento del piso con el que se
+ * relaciona la sección (ver src/constants/territorio.ts): una etiqueta con su símbolo, una línea fina
+ * de color y el animal del elemento como marca de agua.
+ */
+export function PageHeader({ title, description, breadcrumbs, element }: { title: string; description: string; breadcrumbs: { label: string; path?: string }[]; element?: Elemento }) {
+  const { pathname } = useLocation();
+  const el = ELEMENTOS[element ?? elementoDeRuta(pathname)];
   return (
-    <section className="bg-brand-light border-b border-brand-border py-16 md:py-24 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl -mr-32 -mt-32" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-yellow/10 rounded-full blur-3xl -ml-48 -mb-48" />
-      
+    <section className="bg-brand-light border-b border-brand-border py-12 md:py-20 relative overflow-hidden">
+      <span className={`absolute bottom-0 inset-x-0 h-[3px] ${el.edge}`} aria-hidden="true" />
+      <img
+        src={el.animal}
+        alt=""
+        aria-hidden="true"
+        className="hidden md:block absolute right-8 lg:right-24 bottom-0 h-[80%] max-h-[260px] w-auto opacity-15 pointer-events-none"
+      />
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
           <Breadcrumbs items={breadcrumbs} />
-          <h1 className="text-5xl md:text-7xl font-black text-brand-gray mb-6 tracking-tighter leading-tight drop-shadow-sm">
+          <p className="flex items-center gap-2 text-sm text-brand-gray mb-3">
+            <img src={el.symbol} alt="" className="w-5 h-5" />
+            <span className="font-bold">{el.pillar}</span>
+            <span className="font-extralight">· {el.label}</span>
+          </p>
+          <h1 className="text-4xl md:text-[56px] font-bold text-brand-gray mb-5 leading-[1.15] max-w-4xl">
             {title}
           </h1>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-xl text-gray-500 max-w-2xl leading-relaxed font-medium"
-          >
+          <p className="text-lg md:text-2xl font-extralight text-brand-gray max-w-2xl leading-[1.3]">
             {description}
-          </motion.p>
+          </p>
         </motion.div>
       </div>
     </section>

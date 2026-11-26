@@ -11,14 +11,9 @@ import simboloTierra from '../assets/territorio/simbolo-tierra.svg';
 import simboloFuego from '../assets/territorio/simbolo-fuego.svg';
 import simboloAgua from '../assets/territorio/simbolo-agua.svg';
 import simboloAire from '../assets/territorio/simbolo-aire.svg';
-import simboloTierraBlanco from '../assets/territorio/simbolo-tierra-blanco.svg';
-import simboloFuegoBlanco from '../assets/territorio/simbolo-fuego-blanco.svg';
-import simboloAguaBlanco from '../assets/territorio/simbolo-agua-blanco.svg';
-import simboloAireIndigo from '../assets/territorio/simbolo-aire-indigo.svg';
-import arbolBlanco from '../assets/territorio/arbol-blanco.svg';
-import ballenaBlanco from '../assets/territorio/ballena-blanco.svg';
-import colibriIndigo from '../assets/territorio/colibri-indigo.svg';
-import personaBlanco from '../assets/territorio/persona-blanco.svg';
+import arbol from '../assets/territorio/arbol.svg';
+import ballena from '../assets/territorio/ballena.svg';
+import colibri from '../assets/territorio/colibri.svg';
 
 /* ------------------------------------------------------------------ */
 /* Contenido curado de Inicio                                          */
@@ -62,9 +57,9 @@ const PROFILES = [
 
 // Los tres pisos del documento "Territorio de saberes": cada piso es un elemento y se asocia a un pilar.
 const FLOORS = [
-  { n: 3, element: 'Aire', verb: 'Explorar', pillar: 'investigacion' as Pillar, room: 'Sala Colibrí', phrase: 'Las ideas no tienen límites; vuelan, despiertan preguntas y nos llevan a explorar nuevos mundos.', bar: 'bg-aire text-aire-deep', symbol: simboloAireIndigo, animal: colibriIndigo, path: '/catalogo-publico' },
-  { n: 2, element: 'Agua', verb: 'Fluir', pillar: 'creatividad' as Pillar, room: 'Sala ballena jorobada', phrase: 'Las ideas fluyen, se encuentran y se transforman cuando compartimos lo que sabemos.', bar: 'bg-agua text-white', symbol: simboloAguaBlanco, animal: ballenaBlanco, path: '/reserva-de-salas' },
-  { n: 1, element: 'Tierra', verb: 'Cultivar', pillar: 'cultura' as Pillar, room: 'Raíces', phrase: 'El conocimiento echa raíces, se cultiva y crece con cada aprendizaje.', bar: 'bg-tierra text-black', symbol: simboloTierraBlanco, animal: arbolBlanco, path: '/cultura-y-creatividad' },
+  { n: 3, element: 'Aire', verb: 'Explorar', pillar: 'investigacion' as Pillar, room: 'Sala Colibrí', phrase: 'Las ideas no tienen límites; vuelan, despiertan preguntas y nos llevan a explorar nuevos mundos.', edge: 'bg-aire', symbol: simboloAire, animal: colibri, path: '/catalogo-publico' },
+  { n: 2, element: 'Agua', verb: 'Fluir', pillar: 'creatividad' as Pillar, room: 'Sala ballena jorobada', phrase: 'Las ideas fluyen, se encuentran y se transforman cuando compartimos lo que sabemos.', edge: 'bg-agua', symbol: simboloAgua, animal: ballena, path: '/reserva-de-salas' },
+  { n: 1, element: 'Tierra', verb: 'Cultivar', pillar: 'cultura' as Pillar, room: 'Raíces', phrase: 'El conocimiento echa raíces, se cultiva y crece con cada aprendizaje.', edge: 'bg-tierra', symbol: simboloTierra, animal: arbol, path: '/cultura-y-creatividad' },
 ];
 const FIRE = { element: 'Fuego', verb: 'Encender', phrase: 'Es la chispa que despierta la curiosidad, la pasión por aprender y el deseo de transformar nuestro entorno.', path: '/agenda' };
 
@@ -194,25 +189,22 @@ export default function Inicio() {
       <section className="relative bg-white border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-7 relative z-10">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-xl md:text-[28px] font-bold text-agua leading-none">Biblioteca</span>
-              <span className="flex items-center gap-1.5" aria-label="Tierra, fuego, agua y aire">
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm md:text-base text-brand-gray mb-4">
+              <span className="font-bold text-agua">Biblioteca</span>
+              <span className="flex items-center gap-1" aria-hidden="true">
                 {[simboloTierra, simboloFuego, simboloAgua, simboloAire].map((src, i) => (
-                  <img key={i} src={src} alt="" className="h-6 md:h-8 w-auto" />
+                  <img key={i} src={src} alt="" className="h-4 md:h-5 w-auto" />
                 ))}
               </span>
-            </div>
-            <h1 className="text-agua font-medium tracking-[-0.02em] mb-6">
-              <span className="block text-5xl md:text-7xl leading-[1]">Territorio de</span>
-              <span className="block text-[72px] md:text-[120px] leading-[0.95]">saberes</span>
-            </h1>
-            <p className="text-lg md:text-2xl font-light leading-[1.3] text-brand-gray max-w-xl mb-3">
-              Cuatro elementos, cuatro maneras de aprender y un Valle que nos inspira a crecer.
+              <span className="font-extralight">Territorio de saberes</span>
             </p>
-            <p className="text-base md:text-lg font-bold text-brand-gray mb-8">
-              <span className="underline decoration-aire decoration-4 underline-offset-[6px]">Investigación</span>,{' '}
-              <span className="underline decoration-tierra decoration-4 underline-offset-[6px]">cultura</span> y{' '}
-              <span className="underline decoration-agua decoration-4 underline-offset-[6px]">creatividad</span>, abiertas a todos.
+            <h1 className="text-[34px] sm:text-5xl md:text-[56px] font-bold text-brand-gray leading-[1.15] mb-5 text-balance">
+              <span className="underline decoration-aire decoration-[3px] underline-offset-[8px]">Investigación</span>,{' '}
+              <span className="underline decoration-tierra decoration-[3px] underline-offset-[8px]">cultura</span> y{' '}
+              <span className="underline decoration-agua decoration-[3px] underline-offset-[8px]">creatividad</span>, abiertas a todos.
+            </h1>
+            <p className="text-lg md:text-xl font-extralight leading-[1.3] text-brand-gray max-w-xl mb-8">
+              Cuatro elementos, cuatro maneras de aprender y un Valle que nos inspira a crecer.
             </p>
 
           <motion.div
@@ -295,7 +287,7 @@ export default function Inicio() {
           </motion.div>
           </div>
           <div className="hidden lg:block lg:col-span-5" aria-hidden="true">
-            <img src={ilustracionTerritorio} alt="" className="w-full max-w-[520px] ml-auto" />
+            <img src={ilustracionTerritorio} alt="" className="w-full max-w-[440px] ml-auto opacity-35" />
           </div>
         </div>
       </section>
@@ -476,37 +468,28 @@ export default function Inicio() {
             <Link to="/la-biblioteca" className="wireframe-button-primary self-start !bg-black hover:!bg-agua">Conoce la biblioteca</Link>
           </div>
 
-          <div className="lg:col-span-7 flex flex-col gap-3">
-            {FLOORS.map((f) => (
-              <Link key={f.n} to={f.path} className="group flex items-stretch min-h-[112px] md:min-h-[150px] hover:shadow-lg transition-shadow">
-                <span className="w-10 md:w-14 shrink-0 bg-black text-white flex items-center justify-center">
-                  <span className="[writing-mode:vertical-rl] rotate-180 text-sm md:text-lg font-medium whitespace-nowrap">Piso {f.n}</span>
-                </span>
-                <span className={`relative flex-grow min-w-0 flex items-center gap-4 md:gap-6 px-4 md:px-8 py-4 overflow-hidden ${f.bar}`}>
-                  <img src={f.symbol} alt="" className="w-10 h-10 md:w-14 md:h-14 shrink-0" />
-                  <span className="relative z-10 flex flex-col gap-1 min-w-0 sm:pr-28 md:pr-36">
-                    <span className="text-2xl md:text-[32px] font-medium leading-[1.1]">{f.element}</span>
-                    <span className="text-xs md:text-sm font-bold">{PILLARS[f.pillar].label} · {f.verb} · {f.room}</span>
-                    <span className="hidden md:block text-sm leading-[1.3]">{f.phrase}</span>
-                  </span>
-                  <img src={f.animal} alt="" className="hidden sm:block absolute right-4 md:right-8 bottom-0 h-[88%] w-auto max-w-[140px] object-contain object-bottom group-hover:-translate-y-1 transition-transform" />
-                </span>
-              </Link>
-            ))}
-            {/* Fuego: no tiene piso, atraviesa todos */}
-            <Link to={FIRE.path} className="group ml-10 md:ml-14 flex items-stretch min-h-[112px] md:min-h-[150px] hover:shadow-lg transition-shadow">
-              <span className="relative flex-grow min-w-0 flex items-center gap-4 md:gap-6 px-4 md:px-8 py-4 overflow-hidden bg-fuego text-black">
-                <img src={simboloFuegoBlanco} alt="" className="w-10 h-10 md:w-14 md:h-14 shrink-0" />
-                <span className="relative z-10 flex flex-col gap-1 min-w-0 sm:pr-24 md:pr-28">
-                  <span className="text-2xl md:text-[32px] font-medium leading-[1.1]">{FIRE.element}</span>
-                  <span className="text-xs md:text-sm font-bold">Transversal · {FIRE.verb}</span>
-                  <span className="hidden md:block text-sm leading-[1.3]">{FIRE.phrase}</span>
-                </span>
-                <img src={personaBlanco} alt="" className="hidden sm:block absolute right-4 md:right-8 bottom-0 h-[92%] w-auto object-contain object-bottom group-hover:-translate-y-1 transition-transform" />
-              </span>
-            </Link>
-            <p className="ml-10 md:ml-14 text-xs leading-[1.4] text-brand-gray/80">
-              El fuego es el elemento transversal: la energía que nos mueve, la pasión que está en los encuentros, las charlas y en las ganas de aprender e investigar de nuestra comunidad.
+          <div className="lg:col-span-7 relative pl-5 md:pl-7">
+            {/* Fuego: línea fina que atraviesa los tres pisos */}
+            <span className="absolute left-0 top-0 bottom-12 w-[3px] bg-fuego" aria-hidden="true" />
+            <ol className="flex flex-col gap-3">
+              {FLOORS.map((f) => (
+                <li key={f.n}>
+                  <Link to={f.path} className="group relative flex items-center gap-4 md:gap-6 bg-white border border-brand-border hover:shadow-card transition-shadow pl-5 md:pl-7 pr-4 md:pr-6 py-5 overflow-hidden">
+                    <span className={`absolute left-0 inset-y-0 w-1 ${f.edge}`} aria-hidden="true" />
+                    <img src={f.symbol} alt="" className="w-9 h-9 md:w-11 md:h-11 shrink-0" />
+                    <span className="relative z-10 flex flex-col gap-1 min-w-0 sm:pr-24 md:pr-32">
+                      <span className="text-[11px] md:text-xs text-brand-muted">Piso {f.n} · {f.element} · {f.room}</span>
+                      <span className="text-xl md:text-2xl font-bold leading-[1.2] text-brand-gray group-hover:text-agua transition-colors">{PILLARS[f.pillar].label}</span>
+                      <span className="hidden md:block text-sm leading-[1.3] text-brand-gray/70">{f.phrase}</span>
+                    </span>
+                    <img src={f.animal} alt="" className="hidden sm:block absolute right-4 md:right-6 bottom-2 h-[78%] w-auto max-w-[120px] object-contain object-bottom opacity-25 group-hover:opacity-60 transition-opacity" />
+                  </Link>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 flex items-start gap-2 text-xs leading-[1.4] text-brand-gray/80">
+              <img src={simboloFuego} alt="" className="w-4 h-4 mt-px shrink-0" />
+              <span><span className="font-bold text-fuego-ink">Fuego · transversal.</span> {FIRE.phrase}</span>
             </p>
           </div>
         </div>
